@@ -1,7 +1,7 @@
 # Power of Attorney Service
 This awesome web service provides REST API for accessing power of attorney information of a user
   - Power of attorney details such as grantee, grantor and account details (/power-of-attorneys/{id})
-  - Details for card products authorized by the power of attorney (/debit-cards/{id} and /credit-cards/{id})
+  - Details for card products authorized by the power of attorney (/debit-cardDTOS/{id} and /credit-cardDTOS/{id})
   - Account details (/accounts/{id})
   - Some developer might have made an error somewhere
 
@@ -26,3 +26,20 @@ This awesome web service provides REST API for accessing power of attorney infor
   - If the assignment is unclear, do what you feel is best and focus on the code, not the exercise
   - We look at the quality and readability of code that has been delivered more than if the functionality matches our expectations
   - Impress us!
+
+# WWD (What Was Done)
+
+## Requirement
+  - As an user I want to get the aggregated information of the authorizations of an user by its userId,
+  to be able to control its permissions. Inactive products or accounts are taking into account.
+
+## Assumptions
+  - The attribute direction "GIVEN" of power of attorney means that the grantor has given the authorizations to the grantee.
+  - The attribute direction "RECEIVED" of power of attorney means that the grantee has received the authorizations from the grantor.
+  - The attribute id of an account is the sequence of numbers after "NL23RABO" of the attribute account of a power of attorney.
+  - One account is considered inactive when its attribute "ended" is not null.
+  - One credict-card of debit-card is considered inactive when its attribute status is not "ACTIVE".
+
+## How to execute
+  - Build and run wiremock: `mvn compile exec:java`
+  - Build and run spring-boot app: `mvn spring-boot:run`
