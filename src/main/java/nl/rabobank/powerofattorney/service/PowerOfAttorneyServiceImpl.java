@@ -1,6 +1,7 @@
 package nl.rabobank.powerofattorney.service;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.rabobank.powerofattorney.model.Account;
 import nl.rabobank.powerofattorney.model.AggregatedInformation;
 import nl.rabobank.powerofattorney.model.PowerOfAttorney;
 import nl.rabobank.powerofattorney.model.AuthorizationInformation;
@@ -19,20 +20,23 @@ import java.util.stream.Collectors;
  */
 @Component
 @Slf4j
-public class PowerOfAttorneyServiceImpl implements PowerOfAttorneyService {
+class PowerOfAttorneyServiceImpl implements PowerOfAttorneyService {
 
     @Value("${powerofattorneys.url}")
     private String url;
 
     private final RestTemplate restTemplate;
+    private final AccountService accountService;
 
     /**
      * Constructor.
      *
-     * @param restTemplate {@link RestTemplate} instance.
+     * @param restTemplate   {@link RestTemplate} instance.
+     * @param accountService {@link AccountService} instance.
      */
-    public PowerOfAttorneyServiceImpl(final RestTemplate restTemplate) {
+    PowerOfAttorneyServiceImpl(final RestTemplate restTemplate, final AccountService accountService) {
         this.restTemplate = restTemplate;
+        this.accountService = accountService;
     }
 
     @Override
@@ -44,6 +48,7 @@ public class PowerOfAttorneyServiceImpl implements PowerOfAttorneyService {
         final List<AggregatedInformation> aggregatedInformations = powerOfAttorneys.stream()
                 .filter(p -> userId.equals(p.getGrantee()))
                 .map(this::getAuthorizationInformation)
+                .filter(a -> Objects.isNull(a.getAccount().getEnded()))
                 .collect(Collectors.toList());
 
         authorizationInformation.setAggregatedInformations(aggregatedInformations);
@@ -54,9 +59,12 @@ public class PowerOfAttorneyServiceImpl implements PowerOfAttorneyService {
         final AggregatedInformation aggregatedInformation = new AggregatedInformation();
         aggregatedInformation.setId(powerOfAttorney.getId());
         aggregatedInformation.setGrantor(powerOfAttorney.getGrantor());
-        aggregatedInformation.setAccountNumber(powerOfAttorney.getAccount());
         aggregatedInformation.setDirection(powerOfAttorney.getDirection());
         aggregatedInformation.setAuthorizations(Arrays.asList(powerOfAttorney.getAuthorizations()));
+
+        final Account account = accountService.getAccount(powerOfAttorney.getAccount());
+        aggregatedInformation.setAccount(account);
+
         return aggregatedInformation;
     }
 
@@ -81,7 +89,9 @@ public class PowerOfAttorneyServiceImpl implements PowerOfAttorneyService {
         try {
             final String poaIdUrl = String.format("%s%s", url, powerOfAttorney.getId());
             poa = restTemplate.getForObject(poaIdUrl, PowerOfAttorney.class);
-            log.info(poa.toString());
+            if (poa != null) {
+                log.info(poa + " loaded.");
+            }
         } catch (Exception e) {
             log.error("Error loading power of attorney: id=" + powerOfAttorney.getId(), e);
         }

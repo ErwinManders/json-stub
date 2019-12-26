@@ -4,18 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
- * Aggregated information data class.
+ * Account data class.
  */
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AggregatedInformation {
+public class Account {
     private String id;
-    private String grantor;
-    private Account account;
-    private String direction;
-    private List<String> authorizations;
+    private String owner;
+    private long balance;
+    private String created;
+    private String ended;
 }

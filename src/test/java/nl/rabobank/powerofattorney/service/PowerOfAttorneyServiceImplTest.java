@@ -14,8 +14,6 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 class PowerOfAttorneyServiceImplTest {
 
-    private static final String URL = "http://localhost:8080/power-of-attorneys/";
-
     @InjectMocks
     private PowerOfAttorneyServiceImpl service;
 
@@ -30,8 +28,8 @@ class PowerOfAttorneyServiceImplTest {
         poa1.setId("1");
         poa1.setGrantee(userId);
         final PowerOfAttorney[] poas = {poa1};
-        when(restTemplate.getForObject(URL, PowerOfAttorney[].class)).thenReturn(poas);
-        when(restTemplate.getForObject(URL+1, PowerOfAttorney.class)).thenReturn(poa1);
+        when(restTemplate.getForObject("null", PowerOfAttorney[].class)).thenReturn(poas);
+        when(restTemplate.getForObject("null1", PowerOfAttorney.class)).thenReturn(poa1);
 
         // when
         final AuthorizationInformation authorizationInformation = service.getAuthorizations(userId);

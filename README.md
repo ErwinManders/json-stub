@@ -43,3 +43,16 @@ This awesome web service provides REST API for accessing power of attorney infor
 ## How to execute
   - Build and run wiremock: `mvn compile exec:java`
   - Build and run spring-boot app: `mvn spring-boot:run`
+  - Service endpoint: ** http://localhost:8443/powerofattorney/authorizations/{userId}
+
+## How to test
+  - Use one of the following user ids:
+    - Fellowship of the ring: ** http://localhost:8443/powerofattorney/authorizations/Fellowship%20of%20the%20ring
+    - Super duper company: ** http://localhost:8443/powerofattorney/authorizations/Super%20duper%20company
+    - Super duper employee: ** http://localhost:8443/powerofattorney/authorizations/Super%20duper%20employee
+    - Sinterklaas: ** http://localhost:8443/powerofattorney/authorizations/Sinterklaas
+
+## Future work
+  - Add debit and credit card aggregated information
+  - Identify new requirements
+  - Expose API over HTTPS
