@@ -5,7 +5,7 @@ import nl.rabobank.powerofattorney.model.Account;
 /**
  * Account service.
  */
-public interface AccountService {
+interface AccountService {
 
     /**
      * Get the account by account number.
