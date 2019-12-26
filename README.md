@@ -1,7 +1,7 @@
 # Power of Attorney Service
 This awesome web service provides REST API for accessing power of attorney information of a user
   - Power of attorney details such as grantee, grantor and account details (/power-of-attorneys/{id})
-  - Details for card products authorized by the power of attorney (/debit-cardDTOS/{id} and /credit-cardDTOS/{id})
+  - Details for card products authorized by the power of attorney (/debit-cards/{id} and /credit-cards/{id})
   - Account details (/accounts/{id})
   - Some developer might have made an error somewhere
 
