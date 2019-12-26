@@ -1,7 +1,7 @@
 package nl.rabobank.powerofattorney.controller;
 
 import nl.rabobank.powerofattorney.model.AuthorizationInformation;
-import nl.rabobank.powerofattorney.service.PowerOfAttorneyService;
+import nl.rabobank.powerofattorney.service.AuthorizationService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,14 +14,14 @@ import javax.ws.rs.core.Response;
 @RestController
 public class PowerOfAttorneyController {
 
-    private final PowerOfAttorneyService service;
+    private final AuthorizationService service;
 
     /**
      * Constructor.
      *
-     * @param service {@link PowerOfAttorneyService} instance.
+     * @param service {@link AuthorizationService} instance.
      */
-    public PowerOfAttorneyController(final PowerOfAttorneyService service) {
+    public PowerOfAttorneyController(final AuthorizationService service) {
         this.service = service;
     }
 

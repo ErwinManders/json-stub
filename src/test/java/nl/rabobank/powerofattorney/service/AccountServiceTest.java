@@ -8,13 +8,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class AccountServiceTest {
 
-    private static final String ACCOUNT_SERVICE_URL = "http://accountServiceURL/";
+    private static final String SERVICE_URL = "http://rbservice.tst.nl:654/accs/";
 
     private AccountService service;
 
@@ -24,7 +25,7 @@ class AccountServiceTest {
     @BeforeEach
     void setup() {
         service = new AccountServiceImpl(restTemplate);
-        ReflectionTestUtils.setField(service, "url", ACCOUNT_SERVICE_URL);
+        ReflectionTestUtils.setField(service, "url", SERVICE_URL);
     }
 
     @Test
@@ -42,7 +43,7 @@ class AccountServiceTest {
         account.setOwner(owner);
         account.setCreated(created);
         account.setEnded(ended);
-        when(restTemplate.getForObject(ACCOUNT_SERVICE_URL + "123456789", Account.class)).thenReturn(account);
+        when(restTemplate.getForObject(SERVICE_URL + "123456789", Account.class)).thenReturn(account);
 
         // when
         final Account result = service.getAccount(accountId);
