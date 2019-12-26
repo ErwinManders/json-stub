@@ -1,6 +1,6 @@
 package nl.rabobank.powerofattorney.controller;
 
-import nl.rabobank.powerofattorney.model.AutorizationInformation;
+import nl.rabobank.powerofattorney.model.AuthorizationInformation;
 import nl.rabobank.powerofattorney.service.PowerOfAttorneyService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +33,9 @@ public class PowerOfAttorneyController {
      * @return Aggregated information of the authorizations of an user.
      */
     @RequestMapping("/powerofattorney/authorizations/{userId}")
-    public Response getAggregatedPOA(@PathVariable("userId") String userId) {
-        final AutorizationInformation autorizationInformation = service.getAutorizations(userId);
-        return Response.ok().entity(autorizationInformation).build();
+    public Response getAuthorizations(@PathVariable("userId") String userId) {
+        final AuthorizationInformation authorizationInformation = service.getAuthorizations(userId);
+        return Response.ok().entity(authorizationInformation).build();
     }
 
 }

@@ -1,30 +1,46 @@
 package nl.rabobank.powerofattorney.service;
 
-import nl.rabobank.powerofattorney.model.AutorizationInformation;
+import nl.rabobank.powerofattorney.model.AuthorizationInformation;
+import nl.rabobank.powerofattorney.model.PowerOfAttorney;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.client.RestTemplate;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PowerOfAttorneyServiceImplTest {
 
+    private static final String URL = "http://localhost:8080/power-of-attorneys/";
+
     @InjectMocks
-    PowerOfAttorneyServiceImpl service;
+    private PowerOfAttorneyServiceImpl service;
+
+    @Mock
+    private RestTemplate restTemplate;
 
     @Test
-    void testGetAutorizations() {
+    void testGetAuthorizations() {
         // given
         final String userId = "testUser";
+        final PowerOfAttorney poa1 = new PowerOfAttorney();
+        poa1.setId("1");
+        poa1.setGrantee(userId);
+        final PowerOfAttorney[] poas = {poa1};
+        when(restTemplate.getForObject(URL, PowerOfAttorney[].class)).thenReturn(poas);
+        when(restTemplate.getForObject(URL+1, PowerOfAttorney.class)).thenReturn(poa1);
 
         // when
-        final AutorizationInformation autorizationInformation = service.getAutorizations(userId);
+        final AuthorizationInformation authorizationInformation = service.getAuthorizations(userId);
 
         //then
-        assertNotNull(autorizationInformation);
-        assertEquals(userId, autorizationInformation.getUserId());
+        assertNotNull(authorizationInformation);
+        assertEquals(userId, authorizationInformation.getUserId());
+        assertNotNull(authorizationInformation.getAggregatedInformations());
+        assertEquals(0, authorizationInformation.getAggregatedInformations().size());
     }
 
 }

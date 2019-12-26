@@ -1,8 +1,9 @@
 package nl.rabobank.powerofattorney.service;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.rabobank.powerofattorney.model.AggregatedInformation;
 import nl.rabobank.powerofattorney.model.PowerOfAttorney;
-import nl.rabobank.powerofattorney.model.AutorizationInformation;
+import nl.rabobank.powerofattorney.model.AuthorizationInformation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -35,10 +36,28 @@ public class PowerOfAttorneyServiceImpl implements PowerOfAttorneyService {
     }
 
     @Override
-    public AutorizationInformation getAutorizations(String userId) {
-        final AutorizationInformation autorizationInformation = new AutorizationInformation();
-        autorizationInformation.setUserId(userId);
-        return autorizationInformation;
+    public AuthorizationInformation getAuthorizations(String userId) {
+        final AuthorizationInformation authorizationInformation = new AuthorizationInformation();
+        authorizationInformation.setUserId(userId);
+
+        final List<PowerOfAttorney> powerOfAttorneys = getPowerOfAttorneys();
+        final List<AggregatedInformation> aggregatedInformations = powerOfAttorneys.stream()
+                .filter(p -> userId.equals(p.getGrantee()))
+                .map(this::getAuthorizationInformation)
+                .collect(Collectors.toList());
+
+        authorizationInformation.setAggregatedInformations(aggregatedInformations);
+        return authorizationInformation;
+    }
+
+    private AggregatedInformation getAuthorizationInformation(PowerOfAttorney powerOfAttorney) {
+        final AggregatedInformation aggregatedInformation = new AggregatedInformation();
+        aggregatedInformation.setId(powerOfAttorney.getId());
+        aggregatedInformation.setGrantor(powerOfAttorney.getGrantor());
+        aggregatedInformation.setAccountNumber(powerOfAttorney.getAccount());
+        aggregatedInformation.setDirection(powerOfAttorney.getDirection());
+        aggregatedInformation.setAuthorizations(Arrays.asList(powerOfAttorney.getAuthorizations()));
+        return aggregatedInformation;
     }
 
     @Override

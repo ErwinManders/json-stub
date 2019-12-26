@@ -1,7 +1,7 @@
 package nl.rabobank.powerofattorney.service;
 
 import nl.rabobank.powerofattorney.model.PowerOfAttorney;
-import nl.rabobank.powerofattorney.model.AutorizationInformation;
+import nl.rabobank.powerofattorney.model.AuthorizationInformation;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface PowerOfAttorneyService {
      * @param userId user id.
      * @return Aggregated information of the authorizations of an user.
      */
-    AutorizationInformation getAutorizations(String userId);
+    AuthorizationInformation getAuthorizations(String userId);
 
     /**
      * Get the list of power of attorneys
