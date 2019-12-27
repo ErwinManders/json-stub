@@ -37,7 +37,8 @@ class DebitCardServiceTest {
         final int sequenceNumber = 5;
         final String cardHolder = "Frodo Basggins";
         final DebitCard.Limit atmLimit = new DebitCard.Limit(3000, "PER_WEEK");
-        final DebitCard debitCard = new DebitCard(id, status, cardNumber, sequenceNumber, cardHolder, atmLimit, null);
+        final boolean contactless = true;
+        final DebitCard debitCard = new DebitCard(id, status, cardNumber, sequenceNumber, cardHolder, atmLimit, null, contactless);
         when(restTemplate.getForObject(SERVICE_URL + id, DebitCard.class)).thenReturn(debitCard);
 
         // when
@@ -50,5 +51,6 @@ class DebitCardServiceTest {
         assertEquals(cardNumber, result.getCardNumber());
         assertEquals(sequenceNumber, result.getSequenceNumber());
         assertEquals(cardHolder, result.getCardHolder());
+        assertEquals(contactless, result.isContactless());
     }
 }
