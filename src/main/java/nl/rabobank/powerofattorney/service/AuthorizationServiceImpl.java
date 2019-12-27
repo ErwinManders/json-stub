@@ -1,12 +1,10 @@
 package nl.rabobank.powerofattorney.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.rabobank.powerofattorney.model.Account;
-import nl.rabobank.powerofattorney.model.AggregatedInformation;
-import nl.rabobank.powerofattorney.model.AuthorizationInformation;
-import nl.rabobank.powerofattorney.model.PowerOfAttorney;
+import nl.rabobank.powerofattorney.model.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +19,7 @@ class AuthorizationServiceImpl implements AuthorizationService {
 
     private final PowerOfAttorneyService powerOfAttorneyService;
     private final AccountService accountService;
+    private final DebitCardService debitCardService;
 
     /**
      * Constructor.
@@ -28,9 +27,10 @@ class AuthorizationServiceImpl implements AuthorizationService {
      * @param powerOfAttorneyService {@link PowerOfAttorneyService} instance.
      * @param accountService         {@link AccountService} instance.
      */
-    AuthorizationServiceImpl(final PowerOfAttorneyService powerOfAttorneyService, final AccountService accountService) {
+    AuthorizationServiceImpl(final PowerOfAttorneyService powerOfAttorneyService, final AccountService accountService, final DebitCardService debitCardService) {
         this.powerOfAttorneyService = powerOfAttorneyService;
         this.accountService = accountService;
+        this.debitCardService = debitCardService;
     }
 
     @Override
@@ -57,8 +57,19 @@ class AuthorizationServiceImpl implements AuthorizationService {
         aggregatedInformation.setDirection(powerOfAttorney.getDirection());
         final String[] authorizations = Objects.requireNonNullElse(powerOfAttorney.getAuthorizations(), new String[0]);
         aggregatedInformation.setAuthorizations(Arrays.asList(authorizations));
+
         final Account account = accountService.getAccount(powerOfAttorney.getAccount());
         aggregatedInformation.setAccount(account);
+
+        if (powerOfAttorney.getCards() != null) {
+            aggregatedInformation.setDebitCards(new ArrayList<>(2));
+            for (final Card card : powerOfAttorney.getCards()) {
+                if ("DEBIT_CARD".equals(card.getType())) {
+                    final DebitCard debitCard = debitCardService.getDebitCard(card.getId());
+                    aggregatedInformation.getDebitCards().add(debitCard);
+                }
+            }
+        }
 
         return aggregatedInformation;
     }

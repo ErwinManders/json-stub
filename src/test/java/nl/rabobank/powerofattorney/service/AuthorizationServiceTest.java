@@ -24,10 +24,12 @@ class AuthorizationServiceTest {
     private PowerOfAttorneyService powerOfAttorneyService;
     @Mock
     private AccountService accountService;
+    @Mock
+    private DebitCardService debitCardService;
 
     @BeforeEach
     void setup() {
-        service = new AuthorizationServiceImpl(powerOfAttorneyService, accountService);
+        service = new AuthorizationServiceImpl(powerOfAttorneyService, accountService, debitCardService);
     }
 
     @Test

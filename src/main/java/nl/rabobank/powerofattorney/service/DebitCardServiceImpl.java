@@ -2,11 +2,13 @@ package nl.rabobank.powerofattorney.service;
 
 import nl.rabobank.powerofattorney.model.DebitCard;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
  * Implementation of {@link DebitCardService}.
  */
+@Component
 class DebitCardServiceImpl extends AbstractEntityServiceImpl<DebitCard, String> implements DebitCardService {
 
     @Value("${debitcards.url}")
