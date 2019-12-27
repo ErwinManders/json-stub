@@ -7,20 +7,13 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Account data class.
+ * Abstract Card data class.
  */
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Account {
+public abstract class AbstractCard {
     @NonNull
     private String id;
-    @NonNull
-    private String owner;
-    @NonNull
-    private long balance;
-    @NonNull
-    private String created;
-    private String ended;
 }

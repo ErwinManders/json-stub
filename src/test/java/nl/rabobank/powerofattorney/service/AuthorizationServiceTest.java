@@ -37,14 +37,14 @@ class AuthorizationServiceTest {
         final String acc1Owner = "Owner One";
         final long acc1Balance = 150L;
         final String acc1Created = "12-10-2007";
-        final Account acc1 = new Account(acc1Id, acc1Owner, acc1Balance, acc1Created, null);
+        final Account acc1 = new Account(acc1Id, acc1Owner, acc1Balance, acc1Created);
         when(accountService.getAccount(acc1Id)).thenReturn(acc1);
 
         final String acc2Id = "NL23RABO333333333";
         final String acc2Owner = "Owner Three";
         final long acc2Balance = 450L;
         final String acc2Created = "24-05-2009";
-        final Account acc2 = new Account(acc2Id, acc2Owner, acc2Balance, acc2Created, null);
+        final Account acc2 = new Account(acc2Id, acc2Owner, acc2Balance, acc2Created);
         when(accountService.getAccount(acc2Id)).thenReturn(acc2);
 
         final String userGrantor = "testGrantor";
