@@ -40,9 +40,9 @@ This awesome web service provides REST API for accessing power of attorney infor
   - One account is considered inactive when its attribute "ended" is not null.
   - One credict-card of debit-card is considered inactive when its attribute status is not "ACTIVE".
 
-## How to execute
-  - Build and run wiremock: `mvn compile exec:java`
-  - Build and run spring-boot app: `mvn spring-boot:run`
+## How to build and run
+  - wiremock: `mvn compile exec:java`
+  - spring-boot app: `mvn spring-boot:run`
   - Service endpoint: ** http://localhost:8443/powerofattorney/authorizations/{userId}
 
 ## How to test
@@ -53,6 +53,5 @@ This awesome web service provides REST API for accessing power of attorney infor
     - Sinterklaas: ** http://localhost:8443/powerofattorney/authorizations/Sinterklaas
 
 ## Future work
-  - Add debit and credit card aggregated information
   - Identify new requirements
   - Expose API over HTTPS
