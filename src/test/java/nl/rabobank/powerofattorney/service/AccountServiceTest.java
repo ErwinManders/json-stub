@@ -16,6 +16,7 @@ import static org.mockito.Mockito.when;
 class AccountServiceTest {
 
     private static final String SERVICE_URL = "http://rbservice.tst.nl:654/accs/";
+    private static final String ACCOUNT_PREFFIX = "NL23RABO";
 
     private AccountService service;
 
@@ -31,26 +32,22 @@ class AccountServiceTest {
     @Test
     void testGetAccount() {
         // given
-        final String accountId = "NL23RABO123456789";
+        final String accountId = "123456789";
         final long balance = 50L;
         final String owner = "Levi";
         final String created = "12-10-2007";
         final String ended = "13-06-2009";
 
-        final Account account = new Account();
-        account.setId(accountId);
-        account.setBalance(balance);
-        account.setOwner(owner);
-        account.setCreated(created);
+        final Account account = new Account(ACCOUNT_PREFFIX + accountId, owner, balance, created);
         account.setEnded(ended);
-        when(restTemplate.getForObject(SERVICE_URL + "123456789", Account.class)).thenReturn(account);
+        when(restTemplate.getForObject(SERVICE_URL + accountId, Account.class)).thenReturn(account);
 
         // when
-        final Account result = service.getAccount(accountId);
+        final Account result = service.getAccount(ACCOUNT_PREFFIX + accountId);
 
         // then
         assertNotNull(result);
-        assertEquals(accountId, result.getId());
+        assertEquals(ACCOUNT_PREFFIX + accountId, result.getId());
         assertEquals(balance, result.getBalance());
         assertEquals(owner, result.getOwner());
         assertEquals(created, result.getCreated());
