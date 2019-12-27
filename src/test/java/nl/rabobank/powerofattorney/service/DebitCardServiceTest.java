@@ -32,7 +32,12 @@ class DebitCardServiceTest {
     void testGetDebitCard() {
         // given
         final String id = "1111";
-        final DebitCard debitCard = new DebitCard(id, null, null);
+        final String status = "ACTIVE";
+        final long cardNumber = 1234;
+        final int sequenceNumber = 5;
+        final String cardHolder = "Frodo Basggins";
+        final DebitCard.Limit atmLimit = new DebitCard.Limit(3000, "PER_WEEK");
+        final DebitCard debitCard = new DebitCard(id, status, cardNumber, sequenceNumber, cardHolder, atmLimit, null);
         when(restTemplate.getForObject(SERVICE_URL + id, DebitCard.class)).thenReturn(debitCard);
 
         // when
@@ -41,5 +46,9 @@ class DebitCardServiceTest {
         // then
         assertNotNull(result);
         assertEquals(id, result.getId());
+        assertEquals(status, result.getStatus());
+        assertEquals(cardNumber, result.getCardNumber());
+        assertEquals(sequenceNumber, result.getSequenceNumber());
+        assertEquals(cardHolder, result.getCardHolder());
     }
 }

@@ -13,7 +13,15 @@ import lombok.RequiredArgsConstructor;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class AbstractCard {
+abstract class AbstractCard {
     @NonNull
     private String id;
+    @NonNull
+    private String status;
+    @NonNull
+    private long cardNumber;
+    @NonNull
+    private int sequenceNumber;
+    @NonNull
+    private String cardHolder;
 }
