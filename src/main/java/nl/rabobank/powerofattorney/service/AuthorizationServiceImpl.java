@@ -20,17 +20,21 @@ class AuthorizationServiceImpl implements AuthorizationService {
     private final PowerOfAttorneyService powerOfAttorneyService;
     private final AccountService accountService;
     private final DebitCardService debitCardService;
+    private final CreditCardService creditCardService;
 
     /**
      * Constructor.
      *
      * @param powerOfAttorneyService {@link PowerOfAttorneyService} instance.
      * @param accountService         {@link AccountService} instance.
+     * @param debitCardService       {@link DebitCardService} instance.
+     * @param creditCardService       {@link CreditCardService} instance.
      */
-    AuthorizationServiceImpl(final PowerOfAttorneyService powerOfAttorneyService, final AccountService accountService, final DebitCardService debitCardService) {
+    AuthorizationServiceImpl(final PowerOfAttorneyService powerOfAttorneyService, final AccountService accountService, final DebitCardService debitCardService, final CreditCardService creditCardService) {
         this.powerOfAttorneyService = powerOfAttorneyService;
         this.accountService = accountService;
         this.debitCardService = debitCardService;
+        this.creditCardService = creditCardService;
     }
 
     @Override
@@ -62,11 +66,19 @@ class AuthorizationServiceImpl implements AuthorizationService {
         aggregatedInformation.setAccount(account);
 
         if (powerOfAttorney.getCards() != null) {
-            aggregatedInformation.setDebitCards(new ArrayList<>(2));
+            aggregatedInformation.setDebitCards(new ArrayList<>(1));
+            aggregatedInformation.setCreditCards(new ArrayList<>(1));
             for (final Card card : powerOfAttorney.getCards()) {
                 if ("DEBIT_CARD".equals(card.getType())) {
                     final DebitCard debitCard = debitCardService.getDebitCard(card.getId());
-                    aggregatedInformation.getDebitCards().add(debitCard);
+                    if ("ACTIVE".equals(debitCard.getStatus())) {
+                        aggregatedInformation.getDebitCards().add(debitCard);
+                    }
+                } else if ("CREDIT_CARD".equals(card.getType())) {
+                    final CreditCard creditCard = creditCardService.getCreditCard(card.getId());
+                    if ("ACTIVE".equals(creditCard.getStatus())) {
+                        aggregatedInformation.getCreditCards().add(creditCard);
+                    }
                 }
             }
         }

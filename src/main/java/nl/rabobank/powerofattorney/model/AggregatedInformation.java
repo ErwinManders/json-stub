@@ -19,4 +19,5 @@ public class AggregatedInformation {
     private String direction;
     private List<String> authorizations;
     private List<DebitCard> debitCards;
+    private List<CreditCard> creditCards;
 }

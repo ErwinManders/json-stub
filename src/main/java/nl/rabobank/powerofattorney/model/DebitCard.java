@@ -1,16 +1,14 @@
 package nl.rabobank.powerofattorney.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 /**
  * Debit card data class.
  */
 @Data
 @NoArgsConstructor
+@ToString(callSuper = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DebitCard extends AbstractCard {
     @NonNull
